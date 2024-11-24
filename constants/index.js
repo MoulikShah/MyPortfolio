@@ -65,6 +65,10 @@ const navLinks = [
     title: "Projects",
   },
   {
+    id: "education",
+    title: "Education",
+  },
+  {
     id: "skills",
     title: "Skills",
   },
@@ -202,6 +206,53 @@ const extracurriculars = [
   },
 ];
 
+const education = [
+  {
+    school_name: "New York University",
+    degree: "Master of Science in Computer Engineering",
+    icon: "/assets/company/nyu-logo.jpg",
+    iconBg: "#E6DEDD",
+    date: "2024 - 2026",
+    grade: "GPA: In Progress",
+    points: [
+      "Relevant Coursework: Machine Learning, Natural Language Processing, Computer System Architecture",
+    ],
+  },
+  {
+    school_name: "Dwarkadas J. Sanghvi College of Engineering",
+    degree: "Bachelor of Technology in Computer Engineering",
+    icon: "/assets/company/djsce-logo.png",
+    iconBg: "#E6DEDD",
+    date: "2019 - 2023",
+    grade: "CGPA: 8/10",
+    points: [
+      "Relevant Coursework: Data Structures, Algorithms, Machine Learning, Deep Learning, Natural Language Processing, Computer Vision, Database Management Systems",
+    ],
+  },
+  {
+    school_name: "Prakash College of Commerce and Science ",
+    degree: "Higher Secondary Certificate (HSC)",
+    icon: "/assets/company/prakash-logo.jpg",
+    iconBg: "#E6DEDD",
+    date: "2017 - 2019",
+    grade: "Percentile: 93.2%",
+    points: [
+      "Specialized in Science with focus on Physics, Chemistry, and Mathematics",
+    ],
+  },
+  {
+    school_name: "MKVV International Vidyalaya",
+    degree: "Secondary School Certificate (SSC)",
+    icon: "/assets/company/mkvviv-logo.jpg",
+    iconBg: "#E6DEDD",
+    date: "2015 - 2017",
+    grade: "CGPA: 8.4/10",
+    points: [
+      "Represented at National Level in Throwball and participated in Inter School and State Level Competitions",
+      "Represented at School Level in Volleyball participated in Inter School Competitions",
+    ],
+  },
+];
 
 // const testimonials = [
 //   {
@@ -793,9 +844,9 @@ export {
   services,
   technologies,
   experiences,
-  // testimonials,
   projects,
   socials,
   heroTexts,
   extracurriculars,
+  education,
 };

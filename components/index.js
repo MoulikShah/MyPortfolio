@@ -7,6 +7,7 @@ import Experience from "./Experience";
 import Works from "./Works";
 import Contact from "./Contact";
 import Extracurricular from "./Extracurricular";
+import Education from "./Education";
 
 export {
 	Hero,
@@ -17,5 +18,6 @@ export {
 	Works,
 	Contact,
 	StarsCanvas,
-	Extracurricular
+	Extracurricular,
+	Education
 };
