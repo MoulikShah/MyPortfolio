@@ -29,9 +29,14 @@ const EducationCard = ({ education, index }) => (
           {education.degree}
         </h3>
         
-        <p className="text-cyan-300 text-[18px] mt-1">
+        <a 
+          href={education.school_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-cyan-300 text-[18px] mt-1 hover:text-purple-400 transition-all duration-200 inline-block"
+        >
           {education.school_name}
-        </p>
+        </a>
       </div>
     </div>
 

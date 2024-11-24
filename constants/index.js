@@ -215,8 +215,9 @@ const education = [
     date: "2024 - 2026",
     grade: "GPA: In Progress",
     points: [
-      "Relevant Coursework: Machine Learning, Natural Language Processing, Computer System Architecture",
+      "Relevant Coursework: Machine Learning, Natural Language Processing, Computer System Architecture"
     ],
+    school_url: "https://engineering.nyu.edu/",
   },
   {
     school_name: "Dwarkadas J. Sanghvi College of Engineering",
@@ -226,8 +227,9 @@ const education = [
     date: "2019 - 2023",
     grade: "CGPA: 8/10",
     points: [
-      "Relevant Coursework: Data Structures, Algorithms, Machine Learning, Deep Learning, Natural Language Processing, Computer Vision, Database Management Systems",
+      "Relevant Coursework: Data Structures, Algorithms, Machine Learning, Deep Learning, Natural Language Processing, Computer Vision, Database Management Systems"
     ],
+    school_url: "https://www.djsce.ac.in/",
   },
   {
     school_name: "Prakash College of Commerce and Science ",
@@ -237,8 +239,9 @@ const education = [
     date: "2017 - 2019",
     grade: "Percentile: 93.2%",
     points: [
-      "Specialized in Science with focus on Physics, Chemistry, and Mathematics",
+      "Specialized in Science with focus on Physics, Chemistry, and Mathematics"
     ],
+    school_url: "https://prakashcollege.in/",
   },
   {
     school_name: "MKVV International Vidyalaya",
@@ -249,37 +252,11 @@ const education = [
     grade: "CGPA: 8.4/10",
     points: [
       "Represented at National Level in Throwball and participated in Inter School and State Level Competitions",
-      "Represented at School Level in Volleyball participated in Inter School Competitions",
+      "Represented at School Level in Volleyball participated in Inter School Competitions"
     ],
+    school_url: "https://mkvvivschool.in/",
   },
 ];
-
-// const testimonials = [
-//   {
-//     testimonial:
-//       "I thought it was impossible to make a website as beautiful as our product, but Rick proved me wrong.",
-//     name: "Sara Lee",
-//     designation: "CFO",
-//     company: "Acme Co",
-//     image: "https://randomuser.me/api/portraits/women/4.jpg",
-//   },
-//   {
-//     testimonial:
-//       "I've never met a web developer who truly cares about their clients' success like Rick does.",
-//     name: "Chris Brown",
-//     designation: "COO",
-//     company: "DEF Corp",
-//     image: "https://randomuser.me/api/portraits/men/5.jpg",
-//   },
-//   {
-//     testimonial:
-//       "After Rick optimized our website, our traffic increased by 50%. We can't thank them enough!",
-//     name: "Lisa Wang",
-//     designation: "CTO",
-//     company: "456 Enterprises",
-//     image: "https://randomuser.me/api/portraits/women/6.jpg",
-//   },
-// ];
 
 const projects = [
   {
