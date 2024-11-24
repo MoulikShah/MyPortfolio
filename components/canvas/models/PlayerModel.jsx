@@ -83,6 +83,12 @@ function PlayerModel({ nodes, materials, scale, position, rotation, group }) {
 						nodes.Wolf3D_Teeth.morphTargetInfluences
 					}
 				/>
+				<skinnedMesh
+					frustumCulled={false}
+					geometry={nodes.Wolf3D_Glasses.geometry}
+					material={materials.Wolf3D_Glasses}
+					skeleton={nodes.Wolf3D_Glasses.skeleton}
+				/>
 			</group>
 		</group>
 	);

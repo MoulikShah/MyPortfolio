@@ -15,6 +15,9 @@ function Contact() {
   });
   const [loading, setLoading] = useState(false);
 
+  // Add rate limiting
+  const [lastSubmissionTime, setLastSubmissionTime] = useState(0);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const sanitizedValue = DOMPurify.sanitize(value);
@@ -24,6 +27,13 @@ function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check rate limiting (1 minute cooldown)
+    const now = Date.now();
+    if (now - lastSubmissionTime < 60000) {
+      alert("Please wait a minute before sending another message.");
+      return;
+    }
 
     if (!form.name || !form.email || !form.message) {
       alert("All fields are required.");
@@ -37,6 +47,7 @@ function Contact() {
     }
 
     setLoading(true);
+    setLastSubmissionTime(now);
 
     emailjs
       .send(
@@ -44,9 +55,9 @@ function Contact() {
         process.env.NEXT_PUBLIC_TEMPLATE_ID,
         {
           from_name: DOMPurify.sanitize(form.name),
-          to_name: "Shivam Sharma",
+          to_name: "Moulik Shah",
           from_email: DOMPurify.sanitize(form.email),
-          to_email: "shivamsharma77607@gmail.com",
+          to_email: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
           message: DOMPurify.sanitize(form.message),
         },
         process.env.NEXT_PUBLIC_EMAILJS_KEY
@@ -132,7 +143,9 @@ function Contact() {
 
         <button
           type="submit"
-          className="bg-primary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-tertiary hover:shadow-primary hover:bg-tertiary transition-all duration-800 ease-in"
+          disabled={loading}
+          className={`bg-primary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-tertiary transition-all duration-800 ease-in
+            ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-primary hover:bg-tertiary'}`}
         >
           {loading ? "Sending..." : "Send"}
         </button>

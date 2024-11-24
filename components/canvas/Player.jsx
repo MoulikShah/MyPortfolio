@@ -17,13 +17,24 @@ function Player({ isMobile }) {
   const group = useRef();
   const [animationsLoaded, setAnimationsLoaded] = useState(false);
 
-  const { nodes, materials, scene } = useGLTF("models/player/player.gltf");
+  const { nodes, materials, scene } = useGLTF("/models/player/player.glb");
+  
+  if (!nodes || !materials) {
+    console.error("Failed to load model:", { nodes, materials });
+    return null;
+  }
+
+  console.log("Loaded nodes:", nodes);
+  console.log("Loaded materials:", materials);
+  console.log("Scene:", scene);
+
   const { animations: waveAnimation } = useFBX(
     "animations/standing-greeting.fbx"
   );
+  
   scene.frustumCulled = false;
 
-  waveAnimation[0].name = "wave-animation";
+  waveAnimation[0].name = "wave-animation"; 
 
   const { actions } = useAnimations(waveAnimation, group);
 
@@ -53,10 +64,14 @@ function Player({ isMobile }) {
         far={120}
         zoom={1.4}
       />
-      <RandomizedLight position={[0, 1, 0]} />
+      <directionalLight 
+        position={[0, 1, 0]} 
+        intensity={1} 
+      />
       <pointLight intensity={2} position={[1, 1.5, 0]} color={"#804dee"} />
       <pointLight intensity={2} position={[-1, 1.5, 1]} color={"#4b42a7"} />
       <pointLight intensity={2} position={[-1, 0.5, 1]} color={"#804dee"} />
+      
       {!isMobile && (
         <OrbitControls
           makeDefault
@@ -90,11 +105,15 @@ function PlayerCanvas({ isMobile }) {
       gl={{
         outputColorSpace: THREE.SRGBColorSpace,
         alpha: true,
+        antialias: true,
       }}
+      style={{ background: 'transparent' }}
     >
       <Player isMobile={isMobile} />
     </Canvas>
-  );
+  );  
 }
+
+useGLTF.preload("/models/player/player.glb");
 
 export default PlayerCanvas;

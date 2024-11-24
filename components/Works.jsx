@@ -18,7 +18,7 @@ function ProjectCard({
   source_code_link,
   deployed_link,
 }) {
-  const CHAR_LIMIT = 280;
+  const CHAR_LIMIT = 500;
 
   return (
     <motion.div
@@ -30,7 +30,7 @@ function ProjectCard({
       <Tilt
         tiltMaxAngleX="10"
         tiltMaxAngleY="10"
-        className="dark:bg-bgSecondaryDark bg-bgSecondaryLight p-5 rounded-2xl sm:w-[370px] w-full h-fit min-h-[590px] shadow-sm shadow-primary"
+        className="dark:bg-bgSecondaryDark bg-bgSecondaryLight p-5 rounded-2xl sm:w-[370px] w-full h-fit min-h-[650px] shadow-sm shadow-primary"
       >
         <div className="relative w-full h-[230px]">
           <div className="w-full h-full object-cover rounded-2xl relative">
@@ -62,15 +62,15 @@ function ProjectCard({
         </div>
 
         <div className="mt-5">
-          <h3 className="dark:text-ctnPrimaryDark text-ctnPrimaryLight font-bold text-[24px]">
+          <h3 className="dark:text-ctnPrimaryDark text-ctnPrimaryLight font-bold text-[24px] leading-tight">
             {name}
           </h3>
-          <p className="mt-2 dark:text-ctnSecondaryDark text-ctnSecondaryLight text-[14px]">
+          <p className="mt-2 dark:text-ctnSecondaryDark text-ctnSecondaryLight text-[14px] leading-relaxed overflow-y-auto max-h-[200px]">
             {truncateText(description, CHAR_LIMIT)}
           </p>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-auto pt-4 flex flex-wrap gap-2">
           {tags.map((tag) => (
             <p
               key={`${name}-${tag.name}`}

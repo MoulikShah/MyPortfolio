@@ -9,6 +9,7 @@ import {
   StarsCanvas,
   Tech,
   Works,
+  Extracurricular
 } from "@/components";
 import HeroBackground from "@/components/HeroBackground";
 import EarthContainer from "@/components/EarthContainer";
@@ -51,9 +52,9 @@ function App({ loading }) {
       </section>
       <Services />
       <Experience />
-      <Tech />
+      <Extracurricular />
       <Works />
-      {/* <Feedbacks /> */}
+      <Tech />
       <section className="relative z-0 flex md:flex-row justify-between flex-col-reverse w-full h-full overflow-x-hidden sm:p-8 p-2 pb-8">
         <Contact />
         <EarthContainer isMobile={isMobile} />

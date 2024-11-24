@@ -28,27 +28,37 @@ function About() {
         className="mt-4 dark:text-ctnSecondaryDark text-gray-300 text-[17px] w-full leading-[30px] flex flex-col justify-between gap-6"
       >
         <div>
-          Hello! I&apos;m Shivam Sharma, a passionate web developer and problem
-          solver. Currently, I&apos;m the Tech Team Lead at GDSC MVJCE, and
-          I&apos;m pursuing a B.E. degree in Computer Science and Engineering at
-          MVJ College Of Engineering in Bengaluru, India, with an expected
-          graduation year of 2025. I&apos;m a software developer with experience
-          in TypeScript, TailwindCSS, and JavaScript. I specialize in frameworks
-          such as React, Node.js, Next.js, React-Three-Fiber, and Three.js. My
-          knowledge extends to fundamental data structures and algorithms,
-          making me well-versed in frontend web development.
+          Hello! I'm Moulik Shah, a Data Scientist and Software Engineer with a passion 
+          for building intelligent systems and scalable applications. Currently, I'm pursuing 
+          my Master's in Computer Engineering at New York University, with an expected 
+          graduation in May 2026. My expertise spans across machine learning, full-stack 
+          development, and distributed systems.
+          
           <br className="sm:block hidden" />
-          Let&apos;s collaborate to bring your ideas to life!
+          
+          Throughout my journey, I've worked extensively with both AI technologies and 
+          modern software development. On the AI side, I specialize in deep learning, 
+          large language models, and building recommendation systems. As a software engineer, 
+          I'm experienced in developing full-stack applications using modern frameworks like 
+          React, Node.js, and Spring Boot, with a strong focus on creating responsive, 
+          user-centric solutions backed by cloud platforms like AWS and GCP.
+          
+          <br className="sm:block hidden" />
+          
+          I'm actively seeking opportunities in Machine Learning Engineering and Software 
+          Engineering roles where I can combine my expertise in AI/ML with robust software 
+          development practices to build impactful solutions. Let's connect and explore how 
+          we can create innovative systems together!
         </div>
         <div className="w-fit break-words">
           <Link
-            href="mailto:shivamsharma77607@gmail.com"
+            href="mailto:mps10088@nyu.edu"
             target="_blank"
             rel="noreferrer"
             className="hover:text-primary w-full transition-all duration-100 ease-in flex md:items-center gap-2 md:flex-row flex-wrap word-break hover:-translate-y-2"
           >
             <EmailIcon className="w-[30px] h-[30px]" />
-            shivamsharma77607@gmail.com
+            mps10088@nyu.edu
           </Link>
         </div>
         <div className="flex gap-5 items-center">
@@ -64,7 +74,7 @@ function About() {
           ))}
         </div>
         <Link
-          href="document/Shivam_Sharma_Resume.pdf"
+          href="document/Moulik_Shah_Resume_Full.pdf"
           target="_blank"
           rel="noreferrer"
           className="w-fit"
