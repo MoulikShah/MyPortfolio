@@ -69,6 +69,10 @@ const navLinks = [
     title: "Education",
   },
   {
+    id: "achievements",
+    title: "Achievements",
+  },
+  {
     id: "skills",
     title: "Skills",
   },
@@ -417,28 +421,22 @@ const projects = [
     // source_code_link: "https://github.com/Shivam-Sharma-1/Van-Life.git",
     // deployed_link: "https://myvanlife.netlify.app",
   },
-  // {
-  // 	name: "Spooky-Run",
-  // 	description:
-  // 		"Spooky Run is a web based 2D arcade style game that allows players to play as a lost dog finding its way back home through a spooky forest. The game is built using vanilla JavaScript and utilizes HTML5 and the 'canvas' element to render graphics and handle user input.",
-  // 	tags: [
-  // 		{
-  // 			name: "html5",
-  // 			color: "blue-text-gradient"
-  // 		},
-  // 		{
-  // 			name: "css3",
-  // 			color: "green-text-gradient"
-  // 		},
-  // 		{
-  // 			name: "javascript",
-  // 			color: "pink-text-gradient"
-  // 		}
-  // 	],
-  // 	image: "/assets/projects/spooky-run.png",
-  // 	source_code_link: "https://github.com/Shivam-Sharma-1/Spooky-Run.git",
-  // 	deployed_link: "https://shivam-sharma-1.github.io/Spooky-Run"
-  // }
+
+];
+
+const achievements = [
+  {
+    title: "Finalist at Indian Institute of Project Technology",
+    description: "Led the development of an innovative autonomous drone system for healthcare services, integrating AI-driven navigation and medical supply delivery capabilities. The project advanced to the finals of the prestigious IIPT competition, demonstrating technical excellence in combining healthcare logistics with autonomous systems.",
+    icon: "/assets/company/iipt-logo.png",
+    website_url: "https://www.linkedin.com/company/indian-institute-of-project-technology/",
+  },
+  {
+    title: "The Math Company Triathon Competition Winner",
+    description: "Successfully completed The Math Company's competitive aptitude assessment, leading to a direct job offer. Demonstrated exceptional problem-solving and analytical skills throughout the competition.",
+    icon: "/assets/company/tmc-logo.png",
+    website_url: "https://themathcompany.com/",
+  },
 ];
 
 const technologies = {
@@ -826,4 +824,5 @@ export {
   heroTexts,
   extracurriculars,
   education,
+  achievements,
 };

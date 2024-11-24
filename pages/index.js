@@ -10,8 +10,9 @@ import {
   Tech,
   Works,
   Extracurricular,
-  Education
-} from "@/components";
+  Education,
+  Achievements
+} from "@/components/index.js";
 import HeroBackground from "@/components/HeroBackground";
 import EarthContainer from "@/components/EarthContainer";
 import PlayerContainer from "@/components/PlayerContainer";
@@ -56,6 +57,7 @@ function App({ loading }) {
       <Extracurricular />
       <Works />
       <Education />
+      <Achievements />
       <Tech />
       <section className="relative z-0 flex md:flex-row justify-between flex-col-reverse w-full h-full overflow-x-hidden sm:p-8 p-2 pb-8">
         <Contact />
