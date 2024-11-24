@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   OrbitControls,
   PerspectiveCamera,
@@ -16,25 +17,9 @@ import PlayerModel from "./models/PlayerModel";
 function Player({ isMobile }) {
   const group = useRef();
   const [animationsLoaded, setAnimationsLoaded] = useState(false);
-
   const { nodes, materials, scene } = useGLTF("/models/player/player.glb");
-  
-  if (!nodes || !materials) {
-    console.error("Failed to load model:", { nodes, materials });
-    return null;
-  }
-
-  console.log("Loaded nodes:", nodes);
-  console.log("Loaded materials:", materials);
-  console.log("Scene:", scene);
-
-  const { animations: waveAnimation } = useFBX(
-    "animations/standing-greeting.fbx"
-  );
-  
-  scene.frustumCulled = false;
-
-  waveAnimation[0].name = "wave-animation"; 
+  const { animations: waveAnimation } = useFBX("/animations/standing-greeting.fbx");
+  waveAnimation[0].name = "wave-animation";
 
   const { actions } = useAnimations(waveAnimation, group);
 
@@ -43,15 +28,32 @@ function Player({ isMobile }) {
       setAnimationsLoaded(true);
     }
     if (animationsLoaded) {
-      actions["wave-animation"].reset().play();
+      const action = actions["wave-animation"];
+      action?.reset().play();
+      
+      return () => {
+        action?.stop();
+      };
     }
   }, [animationsLoaded, waveAnimation, actions]);
 
-  setTimeout(() => {
-    if (waveAnimation && actions["wave-animation"]) {
-      setAnimationsLoaded(true);
+  useEffect(() => {
+    if (scene) {
+      scene.frustumCulled = false;
     }
-  }, 2000);
+  }, [scene]);
+
+  useEffect(() => {
+    return () => {
+      // Cleanup GLTF resources
+      scene?.dispose();
+    };
+  }, [scene]);
+
+  if (!nodes || !materials) {
+    console.error("Failed to load model:", { nodes, materials });
+    return null;
+  }
 
   return (
     <>
@@ -115,5 +117,13 @@ function PlayerCanvas({ isMobile }) {
 }
 
 useGLTF.preload("/models/player/player.glb");
+
+Player.propTypes = {
+  isMobile: PropTypes.bool.isRequired
+};
+
+PlayerCanvas.propTypes = {
+  isMobile: PropTypes.bool.isRequired
+};
 
 export default PlayerCanvas;

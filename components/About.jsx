@@ -28,26 +28,26 @@ function About() {
         className="mt-4 dark:text-ctnSecondaryDark text-gray-300 text-[17px] w-full leading-[30px] flex flex-col justify-between gap-6"
       >
         <div>
-          Hello! I'm Moulik Shah, a Data Scientist and Software Engineer with a passion 
-          for building intelligent systems and scalable applications. Currently, I'm pursuing 
-          my Master's in Computer Engineering at New York University, with an expected 
+          Hello! I&apos;m Moulik Shah, a Data Scientist and Software Engineer with a passion 
+          for building intelligent systems and scalable applications. Currently, I&apos;m pursuing 
+          my Master&apos;s in Computer Engineering at New York University, with an expected 
           graduation in May 2026. My expertise spans across machine learning, full-stack 
           development, and distributed systems.
           
           <br className="sm:block hidden" />
           
-          Throughout my journey, I've worked extensively with both AI technologies and 
+          Throughout my journey, I&apos;ve worked extensively with both AI technologies and 
           modern software development. On the AI side, I specialize in deep learning, 
           large language models, and building recommendation systems. As a software engineer, 
-          I'm experienced in developing full-stack applications using modern frameworks like 
+          I&apos;m experienced in developing full-stack applications using modern frameworks like 
           React, Node.js, and Spring Boot, with a strong focus on creating responsive, 
           user-centric solutions backed by cloud platforms like AWS and GCP.
           
           <br className="sm:block hidden" />
           
-          I'm actively seeking opportunities in Machine Learning Engineering and Software 
+          I&apos;m actively seeking opportunities in Machine Learning Engineering and Software 
           Engineering roles where I can combine my expertise in AI/ML with robust software 
-          development practices to build impactful solutions. Let's connect and explore how 
+          development practices to build impactful solutions. Let&apos;s connect and explore how 
           we can create innovative systems together!
         </div>
         <div className="w-fit break-words">

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { textVariant, fadeIn } from "../utils/motion";
 import { SectionWrapper } from "../hoc";
 import { extracurriculars } from "../constants";
+import Image from 'next/image';
 
 const ExtraCard = ({ title, company_name, company_url, date, points, index, icon, iconBg }) => {
   return (
@@ -12,7 +13,13 @@ const ExtraCard = ({ title, company_name, company_url, date, points, index, icon
     >
       <div className="bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col">
         <div className="w-[60px] h-[60px] rounded-full flex justify-center items-center bg-dimWhite">
-          <img src={icon} alt={company_name} className="w-[80%] h-[80%] object-contain" />
+          <Image 
+            src={icon} 
+            alt={company_name} 
+            width={48} 
+            height={48} 
+            className="object-contain" 
+          />
         </div>
 
         <h3 className="text-white text-[24px] font-bold text-center">

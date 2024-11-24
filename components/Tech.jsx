@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { technologies } from '../constants';
 import { textVariant } from '../utils/motion';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useGLTF, useAnimations, useFBX } from '@react-three/fiber';
 
 function Tech() {
   return (
@@ -30,10 +32,12 @@ function Tech() {
                 target="_blank"
                 className="w-20 h-20 relative group"
               >
-                <img
+                <Image 
                   src={tech.icon}
                   alt={tech.name}
-                  className="w-full h-full object-contain transition-all duration-300 group-hover:scale-110"
+                  width={100}
+                  height={100}
+                  className="w-20 h-20 object-contain"
                 />
                 <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm dark:text-ctnSecondaryDark text-ctnSecondaryLight">
                   {tech.name}
