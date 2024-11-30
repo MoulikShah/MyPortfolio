@@ -82,14 +82,18 @@ function Experience() {
   }, []);
 
   if (!mounted) {
-    return null;
+    return <div>Loading...</div>;
   }
 
   return (
-    <motion.section className="w-full p-8 mt-20">
+    <motion.section className="w-full p-8">
       <motion.div variants={textVariant()}>
-        <p className={`sectionSubText text-center`}>What I have done so far</p>
-        <h2 className={`sectionHeadText text-center`}>Work Experience.</h2>
+        <p className="sm:text-[18px] text-[14px] uppercase tracking-wider text-center font-medium dark:text-[#804dee] text-[#804dee]">
+          What I have done so far
+        </p>
+        <h2 className="font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center dark:text-white text-black">
+          Work Experience.
+        </h2>
       </motion.div>
 
       <div className="mt-20 flex flex-col">
