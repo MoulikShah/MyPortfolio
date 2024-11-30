@@ -1,10 +1,17 @@
 import { achievements } from '../constants';
 import { SectionWrapper } from '../hoc';
+import Image from 'next/image';
 
 const AchievementCard = ({ title, description, icon, website_url }) => (
   <div className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full hover:bg-[#1d1836] transition-colors duration-300'>
     <div className='flex items-center gap-4'>
-      <img src={icon} alt={title} className='w-12 h-12 object-contain' />
+      <Image
+        src={icon}
+        alt={title}
+        width={500}
+        height={300}
+        className="w-12 h-12 object-contain rounded-2xl"
+      />
       <h3 className='text-white text-[20px] font-bold'>
         {website_url ? (
           <a 

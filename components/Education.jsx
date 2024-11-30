@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { education } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { textVariant, fadeIn } from "../utils/motion";
+import Image from 'next/image';
 
 const EducationCard = ({ education, index }) => (
   <motion.div
@@ -9,10 +10,12 @@ const EducationCard = ({ education, index }) => (
     className="p-6 rounded-2xl sm:w-[360px] w-full"
   >
     <div className="relative w-full">
-      <img
+      <Image
         src={education.icon}
         alt={education.school_name}
-        className="w-16 h-16 rounded-full object-contain bg-white p-1"
+        width={60}
+        height={60}
+        className="w-[60px] h-[60px] object-contain"
       />
       
       <div className="mt-4">
