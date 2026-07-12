@@ -11,13 +11,13 @@ const MIN_SCORE = 0.28;
 // null = unknown, checked lazily on first question.
 let serverChatAvailable = null;
 
-async function askServer(question, contextAnswers) {
+async function askServer(question, contextIds) {
     if (serverChatAvailable === false) return null;
     try {
         const res = await fetch("/api/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question, context: contextAnswers }),
+            body: JSON.stringify({ question, ids: contextIds }),
         });
         if (res.status === 503) {
             serverChatAvailable = false;
@@ -75,7 +75,7 @@ export default function ChatTab({ embedder }) {
             } else {
                 const serverAnswer = await askServer(
                     question,
-                    hits.map((hit) => hit.entry.answer)
+                    hits.map((hit) => hit.entry.id)
                 );
                 if (serverAnswer) {
                     answer = serverAnswer;
