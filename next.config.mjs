@@ -8,6 +8,18 @@ const securityHeaders = [
 
 const nextConfig = {
     reactStrictMode: true,
+    // transformers.js only ever runs in the visitor's browser; without this,
+    // Next's file tracing bundles it (plus onnxruntime's native binaries,
+    // ~445MB) into every serverless function and blows Vercel's 250MB limit.
+    outputFileTracingExcludes: {
+        "*": [
+            "node_modules/@huggingface/transformers/**",
+            "node_modules/onnxruntime-node/**",
+            "node_modules/onnxruntime-web/**",
+            "node_modules/onnxruntime-common/**",
+            "node_modules/sharp/**",
+        ],
+    },
     async headers() {
         return [{ source: "/(.*)", headers: securityHeaders }];
     },
