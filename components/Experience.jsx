@@ -59,24 +59,38 @@ export default function Experience() {
                 ))}
             </ol>
 
-            <Reveal className="mt-12">
+            <Reveal className="mt-14">
                 <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500">
                     Earlier
                 </p>
-                <ul className="mt-4 space-y-2.5">
-                    {earlierRoles.map((role) => (
-                        <li
-                            key={role.company}
-                            className="flex flex-wrap items-baseline gap-x-2 text-sm text-zinc-500"
-                        >
-                            <span className="font-medium text-zinc-300">{role.role}</span>
-                            <span>· {role.company}</span>
-                            <span className="font-mono text-xs">({role.date})</span>
-                            <span className="hidden sm:inline">— {role.note}</span>
-                        </li>
-                    ))}
-                </ul>
             </Reveal>
+            <ol className="relative mt-6 space-y-8 border-l border-ink-700/70 pl-6">
+                {earlierRoles.map((role, i) => (
+                    <li key={role.company} className="relative">
+                        <span className="absolute -left-[29px] top-1.5 h-2 w-2 rounded-full bg-ink-700" />
+                        <Reveal delay={i * 40}>
+                            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                <h3 className="text-[15px] font-semibold text-zinc-200">
+                                    {role.role} <span className="text-zinc-500">·</span>{" "}
+                                    {role.company}
+                                </h3>
+                                <p className="font-mono text-xs text-zinc-500">{role.date}</p>
+                            </div>
+                            <ul className="mt-2 space-y-1.5">
+                                {role.points.map((point, j) => (
+                                    <li
+                                        key={j}
+                                        className="flex gap-2.5 text-sm leading-relaxed text-zinc-500"
+                                    >
+                                        <span className="mt-[8px] h-1 w-1 shrink-0 rounded-full bg-ink-700" />
+                                        {point}
+                                    </li>
+                                ))}
+                            </ul>
+                        </Reveal>
+                    </li>
+                ))}
+            </ol>
         </Section>
     );
 }

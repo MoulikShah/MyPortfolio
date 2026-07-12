@@ -50,7 +50,7 @@ export default function Hero() {
                             href="#playground"
                             className="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-accent-dim"
                         >
-                            Try the ML playground
+                            Ask my AI anything
                         </a>
                         <a
                             href="#experience"
