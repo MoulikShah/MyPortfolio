@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { embed, cosine } from "@/lib/ml";
 import { knowledge, suggestedQuestions } from "@/lib/knowledge";
-import ModelGate from "./ModelGate";
 
 const MIN_SCORE = 0.28;
+const BLEND_GAP = 0.08;
 
 // Server LLM route is optional (needs an API key configured in Vercel).
 // null = unknown, checked lazily on first question.
@@ -41,7 +41,7 @@ export default function ChatTab({ embedder }) {
 
     useEffect(() => {
         scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-    }, [messages]);
+    }, [messages, busy, embedder.status]);
 
     async function ask(text) {
         const question = text.trim();
@@ -50,6 +50,7 @@ export default function ChatTab({ embedder }) {
         setInput("");
         setMessages((prev) => [...prev, { role: "user", text: question }]);
         try {
+            // First question triggers the model download; progress renders inline
             const model = await embedder.load();
             if (!kbVectorsRef.current) {
                 kbVectorsRef.current = await embed(
@@ -65,33 +66,54 @@ export default function ChatTab({ embedder }) {
                 .sort((a, b) => b.score - a.score);
             const retrieveMs = performance.now() - t0;
 
-            const hits = scored.filter((hit) => hit.score >= MIN_SCORE).slice(0, 2);
+            const hits = scored.filter((hit) => hit.score >= MIN_SCORE).slice(0, 3);
 
             let answer;
             let mode = "retrieval";
             if (hits.length === 0) {
                 answer =
-                    "Hmm, I don't have that in my knowledge base. Try asking about Moulik's work at TikTok, his projects, education, or how to reach him.";
+                    "Hmm, that one's not in my knowledge base. Try asking about Moulik's work at TikTok, his V-Lab search system, projects, or how to reach him.";
             } else {
                 const serverAnswer = await askServer(
                     question,
-                    hits.map((hit) => hit.entry.id)
+                    hits.slice(0, 2).map((hit) => hit.entry.id)
                 );
                 if (serverAnswer) {
                     answer = serverAnswer;
                     mode = "llm";
                 } else {
                     answer = hits[0].entry.answer;
+                    // Blend in the runner-up when it's nearly as relevant
+                    if (
+                        hits[1] &&
+                        hits[0].score - hits[1].score <= BLEND_GAP &&
+                        hits[1].entry.id !== "greeting"
+                    ) {
+                        answer += `\n\n${hits[1].entry.answer}`;
+                    }
                 }
             }
+
+            // Offer the next-best topics as follow-up chips
+            const followUps = scored
+                .filter(
+                    (hit) =>
+                        hit.entry.id !== hits[0]?.entry.id &&
+                        hit.entry.id !== "greeting" &&
+                        hit.score >= MIN_SCORE - 0.06
+                )
+                .slice(0, 2)
+                .map((hit) => hit.entry.question);
 
             setMessages((prev) => [
                 ...prev,
                 {
                     role: "bot",
                     text: answer,
+                    followUps,
                     meta: hits.length
                         ? `${mode === "llm" ? "llm + " : ""}retrieved [${hits
+                              .slice(0, 2)
                               .map((hit) => `${hit.entry.id} ${hit.score.toFixed(2)}`)
                               .join(", ")}] in ${retrieveMs.toFixed(1)}ms`
                         : `no match above ${MIN_SCORE} · ${retrieveMs.toFixed(1)}ms`,
@@ -100,51 +122,52 @@ export default function ChatTab({ embedder }) {
         } catch {
             setMessages((prev) => [
                 ...prev,
-                { role: "bot", text: "Something went wrong running the model. Give it another shot." },
+                {
+                    role: "bot",
+                    text: "Something went wrong loading the model. Check your connection and ask again.",
+                },
             ]);
         } finally {
             setBusy(false);
         }
     }
 
+    const lastMessage = messages[messages.length - 1];
+
     return (
-        <ModelGate
-            status={embedder.status}
-            progress={embedder.progress}
-            onLoad={() => embedder.load().catch(() => {})}
-            name="MiniLM-L6-v2"
-            size="23MB"
-        >
-            <div className="flex h-[420px] flex-col">
-                <div ref={scrollRef} className="thin-scroll flex-1 space-y-4 overflow-y-auto pr-2">
-                    {messages.length === 0 && (
-                        <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-                            <p className="max-w-md text-sm leading-relaxed text-zinc-400">
-                                Ask anything about me. Your question gets embedded and matched
-                                against a small knowledge base,{" "}
-                                <span className="text-zinc-200">all inside your browser</span>.
-                                Nothing gets sent anywhere.
-                            </p>
-                            <div className="flex flex-wrap justify-center gap-1.5">
-                                {suggestedQuestions.map((suggestion) => (
-                                    <button
-                                        key={suggestion}
-                                        onClick={() => ask(suggestion)}
-                                        className="chip transition-colors hover:border-accent/50 hover:text-zinc-200"
-                                    >
-                                        {suggestion}
-                                    </button>
-                                ))}
-                            </div>
+        <div className="flex h-[440px] flex-col">
+            <div ref={scrollRef} className="thin-scroll flex-1 space-y-4 overflow-y-auto pr-2">
+                {messages.length === 0 && (
+                    <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+                        <p className="max-w-md text-sm leading-relaxed text-zinc-400">
+                            Ask anything about me. Your question gets embedded and matched
+                            against a small knowledge base,{" "}
+                            <span className="text-zinc-200">all inside your browser</span>.
+                            Nothing gets sent anywhere.
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-1.5">
+                            {suggestedQuestions.map((suggestion) => (
+                                <button
+                                    key={suggestion}
+                                    onClick={() => ask(suggestion)}
+                                    className="chip transition-colors hover:border-accent/50 hover:text-zinc-200"
+                                >
+                                    {suggestion}
+                                </button>
+                            ))}
                         </div>
-                    )}
-                    {messages.map((message, i) => (
+                        <p className="font-mono text-[11px] text-zinc-600">
+                            first question downloads the model (23MB, one time)
+                        </p>
+                    </div>
+                )}
+                {messages.map((message, i) => (
+                    <div key={i}>
                         <div
-                            key={i}
                             className={message.role === "user" ? "flex justify-end" : "flex justify-start"}
                         >
                             <div
-                                className={`max-w-[85%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed ${
+                                className={`max-w-[85%] whitespace-pre-line rounded-xl px-3.5 py-2.5 text-sm leading-relaxed ${
                                     message.role === "user"
                                         ? "bg-accent/15 text-zinc-100"
                                         : "border border-ink-800 bg-ink-950/60 text-zinc-300"
@@ -156,35 +179,68 @@ export default function ChatTab({ embedder }) {
                                 )}
                             </div>
                         </div>
-                    ))}
-                    {busy && (
-                        <p className="font-mono text-xs text-zinc-600">
-                            <span className="inline-block animate-pulse">thinking…</span>
-                        </p>
-                    )}
-                </div>
-                <form
-                    className="mt-4 flex gap-2"
-                    onSubmit={(event) => {
-                        event.preventDefault();
-                        ask(input);
-                    }}
-                >
-                    <input
-                        value={input}
-                        onChange={(event) => setInput(event.target.value)}
-                        placeholder="Ask about my experience, projects, stack…"
-                        className="w-full rounded-lg border border-ink-700 bg-ink-950 px-3.5 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-accent/60 focus:outline-none"
-                    />
-                    <button
-                        type="submit"
-                        disabled={busy}
-                        className="shrink-0 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-ink-950 transition-colors hover:bg-accent-dim disabled:opacity-50"
-                    >
-                        Ask
-                    </button>
-                </form>
+                        {message.role === "bot" &&
+                            message === lastMessage &&
+                            message.followUps?.length > 0 && (
+                                <div className="mt-2 flex flex-wrap gap-1.5">
+                                    {message.followUps.map((followUp) => (
+                                        <button
+                                            key={followUp}
+                                            onClick={() => ask(followUp)}
+                                            className="chip transition-colors hover:border-accent/50 hover:text-zinc-200"
+                                        >
+                                            {followUp}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                    </div>
+                ))}
+                {busy && (
+                    <div className="flex justify-start">
+                        <div className="rounded-xl border border-ink-800 bg-ink-950/60 px-3.5 py-2.5">
+                            {embedder.status === "loading" ? (
+                                <div className="flex items-center gap-2.5">
+                                    <span className="h-1 w-28 overflow-hidden rounded-full bg-ink-800">
+                                        <span
+                                            className="block h-full rounded-full bg-accent transition-all duration-300"
+                                            style={{ width: `${Math.max(embedder.progress, 3)}%` }}
+                                        />
+                                    </span>
+                                    <span className="font-mono text-[11px] text-zinc-500">
+                                        downloading model · {embedder.progress}%
+                                    </span>
+                                </div>
+                            ) : (
+                                <span className="animate-pulse font-mono text-xs text-zinc-500">
+                                    thinking…
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
-        </ModelGate>
+            <form
+                className="mt-4 flex gap-2"
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    ask(input);
+                }}
+            >
+                <input
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    placeholder="Ask about my experience, projects, stack…"
+                    className="w-full rounded-lg border border-ink-700 bg-ink-950 px-3.5 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-accent/60 focus:outline-none"
+                />
+                <button
+                    type="submit"
+                    disabled={busy}
+                    className="shrink-0 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-ink-950 transition-colors hover:bg-accent-dim disabled:opacity-50"
+                >
+                    Ask
+                </button>
+            </form>
+        </div>
     );
 }

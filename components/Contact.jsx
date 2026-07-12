@@ -44,7 +44,7 @@ export default function Contact() {
             <footer className="mt-20 border-t border-ink-800/70 pt-6 font-mono text-xs text-zinc-600">
                 <p>
                     © {new Date().getFullYear()} {site.name} · {site.location} · Built with
-                    Next.js. The ML demos run right in your browser.
+                    Next.js. The chat runs right in your browser.
                 </p>
             </footer>
         </section>
