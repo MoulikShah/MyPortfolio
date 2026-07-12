@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { embed, cosine } from "@/lib/ml";
+import { generateGrounded } from "@/lib/llm";
 import { knowledge, suggestedQuestions } from "@/lib/knowledge";
 
 const MIN_SCORE = 0.28;
@@ -32,7 +33,7 @@ async function askServer(question, contextIds) {
     }
 }
 
-export default function ChatTab({ embedder }) {
+export default function ChatTab({ embedder, turbo }) {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
     const [busy, setBusy] = useState(false);
@@ -68,6 +69,62 @@ export default function ChatTab({ embedder }) {
 
             const hits = scored.filter((hit) => hit.score >= MIN_SCORE).slice(0, 3);
 
+            // Offer the next-best topics as follow-up chips
+            const followUps = scored
+                .filter(
+                    (hit) =>
+                        hit.entry.id !== hits[0]?.entry.id &&
+                        hit.entry.id !== "greeting" &&
+                        hit.score >= MIN_SCORE - 0.06
+                )
+                .slice(0, 2)
+                .map((hit) => hit.entry.question);
+
+            const retrievedMeta = hits.length
+                ? `retrieved [${hits
+                      .slice(0, 2)
+                      .map((hit) => `${hit.entry.id} ${hit.score.toFixed(2)}`)
+                      .join(", ")}] in ${retrieveMs.toFixed(1)}ms`
+                : `no match above ${MIN_SCORE} · ${retrieveMs.toFixed(1)}ms`;
+
+            // On-device LLM generation when turbo is on and we have grounding
+            if (turbo?.status === "ready" && turbo.engineRef.current && hits.length > 0) {
+                const t1 = performance.now();
+                let streamed = "";
+                let firstTokenMs = null;
+                setMessages((prev) => [...prev, { role: "bot", text: "", streaming: true }]);
+                try {
+                    await generateGrounded(
+                        turbo.engineRef.current,
+                        question,
+                        hits.slice(0, 2).map((hit) => hit.entry.answer),
+                        (token) => {
+                            if (firstTokenMs === null) firstTokenMs = performance.now() - t1;
+                            streamed += token;
+                            setMessages((prev) => {
+                                const copy = [...prev];
+                                copy[copy.length - 1] = { ...copy[copy.length - 1], text: streamed };
+                                return copy;
+                            });
+                        }
+                    );
+                    setMessages((prev) => {
+                        const copy = [...prev];
+                        copy[copy.length - 1] = {
+                            role: "bot",
+                            text: streamed,
+                            followUps,
+                            meta: `on-device llm · first token ${firstTokenMs?.toFixed(0) ?? "?"}ms · ${retrievedMeta}`,
+                        };
+                        return copy;
+                    });
+                    return;
+                } catch (err) {
+                    console.error("Turbo generation failed:", err);
+                    setMessages((prev) => prev.slice(0, -1)); // drop the empty bubble, fall through
+                }
+            }
+
             let answer;
             let mode = "retrieval";
             if (hits.length === 0) {
@@ -94,29 +151,13 @@ export default function ChatTab({ embedder }) {
                 }
             }
 
-            // Offer the next-best topics as follow-up chips
-            const followUps = scored
-                .filter(
-                    (hit) =>
-                        hit.entry.id !== hits[0]?.entry.id &&
-                        hit.entry.id !== "greeting" &&
-                        hit.score >= MIN_SCORE - 0.06
-                )
-                .slice(0, 2)
-                .map((hit) => hit.entry.question);
-
             setMessages((prev) => [
                 ...prev,
                 {
                     role: "bot",
                     text: answer,
                     followUps,
-                    meta: hits.length
-                        ? `${mode === "llm" ? "llm + " : ""}retrieved [${hits
-                              .slice(0, 2)
-                              .map((hit) => `${hit.entry.id} ${hit.score.toFixed(2)}`)
-                              .join(", ")}] in ${retrieveMs.toFixed(1)}ms`
-                        : `no match above ${MIN_SCORE} · ${retrieveMs.toFixed(1)}ms`,
+                    meta: `${mode === "llm" ? "llm + " : ""}${retrievedMeta}`,
                 },
             ]);
         } catch {

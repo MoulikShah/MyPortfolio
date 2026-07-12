@@ -8,11 +8,16 @@ Services · US Transaction Team). Live at
 
 - **Next.js 15 (App Router) + Tailwind CSS**, dark content-first design,
   ~113KB first-load JS.
+- **Rank Lab** — an interactive toy recommender: a recall pool of local
+  services, a linear ranker over the visitor's clicks/dwell/hide signals, and
+  a UCB exploration bonus, with the feed re-ranking live as you use it.
 - **"Ask my AI" chat that runs in the visitor's browser** via
   [transformers.js](https://github.com/huggingface/transformers.js): a
   quantized MiniLM-L6-v2 embedding model (ONNX, WASM) embeds each question
   and answers via retrieval over a knowledge base. Nothing leaves the
-  browser.
+  browser. An optional turbo mode (WebGPU) downloads a small instruct LLM
+  through [WebLLM](https://github.com/mlc-ai/web-llm) that generates the
+  answers on-device, streamed.
 
 ## Develop
 

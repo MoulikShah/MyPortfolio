@@ -18,6 +18,7 @@ const nextConfig = {
             "node_modules/onnxruntime-web/**",
             "node_modules/onnxruntime-common/**",
             "node_modules/sharp/**",
+            "node_modules/@mlc-ai/**",
         ],
     },
     async headers() {

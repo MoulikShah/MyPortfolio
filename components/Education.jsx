@@ -4,7 +4,7 @@ import Reveal from "./Reveal";
 
 export default function Education() {
     return (
-        <Section id="education" kicker="03 · Education" title="Where I studied">
+        <Section id="education" kicker="04 · Education" title="Where I studied">
             <div className="space-y-6">
                 {education.map((school, i) => (
                     <Reveal key={school.school} delay={i * 50}>

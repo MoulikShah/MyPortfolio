@@ -31,8 +31,10 @@ html {
 /* Scroll-reveal: applied via <Reveal>, driven by IntersectionObserver */
 .reveal {
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
+    transform: translateY(22px) scale(0.985);
+    transition:
+        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal.is-visible {

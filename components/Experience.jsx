@@ -4,7 +4,7 @@ import Reveal from "./Reveal";
 
 export default function Experience() {
     return (
-        <Section id="experience" kicker="01 · Experience" title="Where I’ve worked">
+        <Section id="experience" kicker="02 · Experience" title="Where I’ve worked">
             <ol className="relative space-y-10 border-l border-ink-700/70 pl-6">
                 {experience.map((job, i) => (
                     <li key={job.company} className="relative">

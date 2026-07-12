@@ -1,5 +1,7 @@
 import { hero, site } from "@/lib/content";
 import Reveal from "./Reveal";
+import HeroField from "./HeroField";
+import Magnetic from "./Magnetic";
 
 function SocialLink({ href, label, children }) {
     return (
@@ -30,6 +32,7 @@ export default function Hero() {
                         "radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 100%)",
                 }}
             />
+            <HeroField />
             <div className="relative mx-auto flex min-h-[92vh] max-w-wide flex-col justify-center px-5 pt-14">
                 <Reveal>
                     <p className="font-mono text-sm text-accent">{hero.kicker}</p>
@@ -46,12 +49,14 @@ export default function Hero() {
                 </Reveal>
                 <Reveal delay={240}>
                     <div className="mt-9 flex flex-wrap items-center gap-4">
-                        <a
-                            href="#playground"
-                            className="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-accent-dim"
-                        >
-                            Ask my AI anything
-                        </a>
+                        <Magnetic>
+                            <a
+                                href="#playground"
+                                className="inline-block rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-accent-dim"
+                            >
+                                Ask my AI anything
+                            </a>
+                        </Magnetic>
                         <a
                             href="#experience"
                             className="rounded-lg border border-ink-700 px-4 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:border-zinc-500"

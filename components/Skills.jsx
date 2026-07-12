@@ -4,7 +4,7 @@ import Reveal from "./Reveal";
 
 export default function Skills() {
     return (
-        <Section id="skills" kicker="04 · Skills" title="What I work with">
+        <Section id="skills" kicker="05 · Skills" title="What I work with">
             <div className="space-y-6">
                 {skills.map((group, i) => (
                     <Reveal key={group.group} delay={i * 40}>

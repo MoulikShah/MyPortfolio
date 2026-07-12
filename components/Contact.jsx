@@ -5,7 +5,7 @@ export default function Contact() {
     return (
         <section id="contact" className="mx-auto max-w-content px-5 pb-10 pt-16 sm:pt-20">
             <Reveal>
-                <p className="section-kicker">05 · Contact</p>
+                <p className="section-kicker">06 · Contact</p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-100 sm:text-3xl">
                     Let’s talk recsys, LLMs, or ML infra.
                 </h2>
