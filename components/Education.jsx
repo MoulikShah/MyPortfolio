@@ -1,93 +1,43 @@
-import { motion } from "framer-motion";
-import { education } from "../constants";
-import { SectionWrapper } from "../hoc";
-import { textVariant, fadeIn } from "../utils/motion";
-import Image from 'next/image';
+import { education, achievements } from "@/lib/content";
+import Section from "./Section";
+import Reveal from "./Reveal";
 
-const EducationCard = ({ education, index }) => (
-  <motion.div
-    variants={fadeIn("up", "spring", index * 0.5, 0.75)}
-    className="p-6 rounded-2xl sm:w-[360px] w-full"
-  >
-    <div className="relative w-full">
-      <Image
-        src={education.icon}
-        alt={education.school_name}
-        width={60}
-        height={60}
-        className="w-[60px] h-[60px] object-contain"
-      />
-      
-      <div className="mt-4">
-        <div className="flex justify-between items-center">
-          <p className="text-white font-medium text-[16px]">
-            {education.date}
-          </p>
-          <p className="text-purple-400 font-semibold text-[14px]">
-            {education.grade}
-          </p>
-        </div>
-        
-        <h3 className="text-white font-bold text-[24px] mt-2">
-          {education.degree}
-        </h3>
-        
-        <a 
-          href={education.school_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-cyan-300 text-[18px] mt-1 hover:text-purple-400 transition-all duration-200 inline-block"
-        >
-          {education.school_name}
-        </a>
-      </div>
-    </div>
-
-    <div className="mt-4 border-t border-purple-800 pt-4">
-      <ul className="list-none space-y-2">
-        {education.points.map((point, pointIndex) => (
-          <li
-            key={`education-point-${pointIndex}`}
-            className="text-white-100 text-[14px] pl-1 tracking-wider hover:text-purple-400 transition-all duration-200 flex items-start"
-          >
-            <span className="text-cyan-300 mr-2">•</span>
-            {point}
-          </li>
-        ))}
-      </ul>
-    </div>
-  </motion.div>
-);
-
-const Education = () => {
-  return (
-    <>
-      <motion.div variants={textVariant()}>
-        <p className="sectionSubText text-center">What I have learned so far</p>
-        <h2 className="sectionHeadText text-center">Education.</h2>
-      </motion.div>
-
-      <div className="w-full flex">
-        <motion.p
-          variants={fadeIn("", "", 0.1, 1)}
-          className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px] text-center mx-auto"
-        >
-          My academic journey has equipped me with both theoretical knowledge and practical skills,
-          preparing me for real-world challenges in technology and innovation.
-        </motion.p>
-      </div>
-
-      <div className="mt-20 flex flex-wrap gap-7 justify-center">
-        {education.map((education, index) => (
-          <EducationCard
-            key={`education-${index}`}
-            index={index}
-            education={education}
-          />
-        ))}
-      </div>
-    </>
-  );
-};
-
-export default SectionWrapper(Education, "education");
+export default function Education() {
+    return (
+        <Section id="education" kicker="03 · Education" title="Where I studied">
+            <div className="space-y-6">
+                {education.map((school, i) => (
+                    <Reveal key={school.school} delay={i * 50}>
+                        <div className="card p-5">
+                            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                <h3 className="font-semibold text-zinc-100">
+                                    <a href={school.url} target="_blank" rel="noreferrer" className="link-underline">
+                                        {school.school}
+                                    </a>
+                                </h3>
+                                <p className="font-mono text-xs text-zinc-500">{school.date}</p>
+                            </div>
+                            <p className="mt-1 text-sm text-zinc-300">{school.degree}</p>
+                            <p className="mt-2 font-mono text-xs leading-relaxed text-zinc-500">
+                                {school.note}
+                            </p>
+                        </div>
+                    </Reveal>
+                ))}
+            </div>
+            <Reveal className="mt-10">
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500">
+                    Achievements
+                </p>
+                <ul className="mt-4 space-y-3">
+                    {achievements.map((achievement) => (
+                        <li key={achievement.title} className="text-sm leading-relaxed">
+                            <span className="font-medium text-zinc-200">{achievement.title}</span>
+                            <span className="text-zinc-500"> — {achievement.note}</span>
+                        </li>
+                    ))}
+                </ul>
+            </Reveal>
+        </Section>
+    );
+}
