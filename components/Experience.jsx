@@ -1,114 +1,82 @@
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from "react-vertical-timeline-component";
-import { motion } from "framer-motion";
+import { experience, earlierRoles } from "@/lib/content";
+import Section from "./Section";
+import Reveal from "./Reveal";
 
-import "react-vertical-timeline-component/style.min.css";
+export default function Experience() {
+    return (
+        <Section id="experience" kicker="01 · Experience" title="Where I’ve worked">
+            <ol className="relative space-y-10 border-l border-ink-700/70 pl-6">
+                {experience.map((job, i) => (
+                    <li key={job.company} className="relative">
+                        <span
+                            className={`absolute -left-[31px] top-1.5 h-2.5 w-2.5 rounded-full ${
+                                job.current
+                                    ? "bg-accent shadow-[0_0_12px_rgba(45,212,191,0.6)]"
+                                    : "bg-ink-700"
+                            }`}
+                        />
+                        <Reveal delay={i * 40}>
+                            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                <h3 className="text-lg font-semibold text-zinc-100">
+                                    {job.role}{" "}
+                                    <span className="text-zinc-400">·</span>{" "}
+                                    <a
+                                        href={job.url}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="link-underline text-zinc-100"
+                                    >
+                                        {job.company}
+                                    </a>
+                                    {job.current && (
+                                        <span className="ml-2 align-middle rounded-full border border-accent/40 bg-accent-faint px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-accent">
+                                            now
+                                        </span>
+                                    )}
+                                </h3>
+                                <p className="font-mono text-xs text-zinc-500">{job.date}</p>
+                            </div>
+                            <p className="mt-0.5 font-mono text-xs text-zinc-500">
+                                {job.team} · {job.location}
+                            </p>
+                            <ul className="mt-3 space-y-2">
+                                {job.points.map((point, j) => (
+                                    <li key={j} className="flex gap-2.5 text-[15px] leading-relaxed text-zinc-400">
+                                        <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-accent/60" />
+                                        {point}
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className="mt-3 flex flex-wrap gap-1.5">
+                                {job.tags.map((tag) => (
+                                    <span key={tag} className="chip">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        </Reveal>
+                    </li>
+                ))}
+            </ol>
 
-import { experiences } from "../constants";
-import { SectionWrapper } from "../hoc";
-import { textVariant } from "../utils/motion";
-
-function ExperienceCard({ experience, theme }) {
-  return (
-    <VerticalTimelineElement
-      contentStyle={{
-        background:
-          theme !== "dark"
-            ? "linear-gradient(90deg, rgba(224,234,240,1) 0%, rgba(232,239,243,1) 50%, rgba(224,234,240,1) 100%)"
-            : "linear-gradient(90deg, rgba(33,33,52,1) 0%, rgba(39,39,61,1) 50%, rgba(33,33,52,1) 100%)",
-        color: theme !== "dark" ? "#7e8c9f" : "#e5e6e9",
-        boxShadow: "0 1px 2px 0 rgb(128, 77, 238)",
-      }}
-      contentArrowStyle={{
-        borderRight: `7px solid ${theme !== "dark" ? "#e0eaf0" : "#2b2b42"}`,
-      }}
-      style={{
-        boxShadow: "0 1px 2px 0 rgb(128, 77, 238 / 0.05)",
-      }}
-      date={experience.date}
-      iconStyle={{ background: experience.iconBg, backgroundColor: "#e0eaf0" }}
-      icon={
-        <div className="flex justify-center items-center w-full h-full">
-          <div className="w-[60%] h-[60%] relative">
-            <Image
-              src={experience.icon}
-              alt={experience.company_name}
-              fill={true}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 20vw"
-            />
-          </div>
-        </div>
-      }
-    >
-      <div>
-        <h3 className="dark:text-ctnPrimaryDark text-ctnPrimaryLight text-[24px] font-bold">
-          {experience.title}
-        </h3>
-        <a 
-          href={experience.company_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-secondary text-[16px] font-semibold hover:text-white transition-colors"
-        >
-          {experience.company_name}
-        </a>
-      </div>
-
-      <ul className="mt-5 list-disc ml-5 space-y-2">
-        {experience.points.map((point, index) => (
-          <li
-            key={`experience-point-${index}`}
-            className="dark:text-ctnPrimaryDark text-ctnPrimaryLight text-[14px] pl-1 tracking-wider"
-          >
-            {point}
-          </li>
-        ))}
-      </ul>
-    </VerticalTimelineElement>
-  );
+            <Reveal className="mt-12">
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500">
+                    Earlier
+                </p>
+                <ul className="mt-4 space-y-2.5">
+                    {earlierRoles.map((role) => (
+                        <li
+                            key={role.company}
+                            className="flex flex-wrap items-baseline gap-x-2 text-sm text-zinc-500"
+                        >
+                            <span className="font-medium text-zinc-300">{role.role}</span>
+                            <span>· {role.company}</span>
+                            <span className="font-mono text-xs">({role.date})</span>
+                            <span className="hidden sm:inline">— {role.note}</span>
+                        </li>
+                    ))}
+                </ul>
+            </Reveal>
+        </Section>
+    );
 }
-
-function Experience() {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <div className="w-full mt-32">
-      <div>
-        <p className="sm:text-[18px] text-[14px] uppercase tracking-wider text-center font-medium dark:text-[#804dee] text-[#804dee]">
-          What I have done so far
-        </p>
-        <h2 className="font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center dark:text-white text-black">
-          Work Experience.
-        </h2>
-      </div>
-
-      <div className="mt-20 flex flex-col">
-        <VerticalTimeline lineColor={theme === "dark" ? "#7e8c9f" : "#8c9db1"}>
-          {experiences.map((experience, index) => (
-            <ExperienceCard
-              key={`experience-${index}`}
-              experience={experience}
-              theme={theme}
-            />
-          ))}
-        </VerticalTimeline>
-      </div>
-    </div>
-  );
-}
-
-export default SectionWrapper(Experience, "work");
